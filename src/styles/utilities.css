@@ -1,0 +1,103 @@
+/* Custom utility classes */
+
+/* Gradient text */
+.gradient-text {
+  @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Shadow utilities */
+.shadow-primary {
+  box-shadow: 0 10px 40px -10px rgba(168, 85, 247, 0.4);
+}
+
+.shadow-secondary {
+  box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.4);
+}
+
+/* Aspect ratio */
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+/* Text balance */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Smooth scrolling section */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+/* Fade in animation */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
+}
+
+/* Truncate with tooltip */
+.truncate-tooltip {
+  @apply truncate;
+  cursor: help;
+}
+
+/* Full bleed container */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+/* Sticky header offset */
+.sticky-offset {
+  scroll-margin-top: var(--header-height);
+}
+
+/* Print utilities */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Dark mode utilities (for future use) */
+@media (prefers-color-scheme: dark) {
+  .dark\:text-white {
+    color: white;
+  }
+  
+  .dark\:bg-gray-900 {
+    background-color: #111827;
+  }
+}

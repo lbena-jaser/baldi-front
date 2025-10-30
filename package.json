@@ -1,0 +1,46 @@
+{
+  "name": "baldi-meals-frontend",
+  "version": "1.0.0",
+  "description": "Customer website for Baldi Meals subscription service",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext js",
+    "format": "prettier --write \"src/**/*.{js,css,html}\"",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "date-fns": "^3.0.0",
+    "idb": "^8.0.0",
+    "zustand": "^4.4.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.10",
+    "@vitest/ui": "^4.0.5",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.54.0",
+    "postcss": "^8.4.0",
+    "prettier": "^3.1.0",
+    "prettier-plugin-tailwindcss": "^0.5.0",
+    "tailwindcss": "^3.4.0",
+    "vite": "^7.1.12",
+    "vite-plugin-html": "^3.2.0",
+    "vitest": "^4.0.5"
+  },
+  "keywords": [
+    "meal-prep",
+    "subscription",
+    "food-delivery",
+    "fitness",
+    "health"
+  ],
+  "author": "jasser tissaoui",
+  "license": "ISC"
+}

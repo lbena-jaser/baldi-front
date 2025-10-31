@@ -2,6 +2,61 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { createHtmlPlugin } from 'vite-plugin-html';
 
+// Dev/preview middleware to rewrite top-level html paths to actual file locations
+function rewriteHtmlRoutes() {
+  const landingPages = new Set([
+    'index', 'about-us', 'how-it-works', 'our-menu', 'refer-and-save', 'contact-us', 'FQAs', 'terms',
+  ]);
+  const authPages = new Set([
+    'login', 'register', 'forgot-password', 'reset-password', 'verify-email', 'two-factor',
+  ]);
+  const appPages = new Set([
+    'dashboard', 'weekly-menu', 'subscription', 'create-order', 'orders', 'order-details', 'addresses',
+    'payment-methods', 'payments', 'notifications', 'referrals', 'profile', 'settings',
+  ]);
+
+  function rewrite(url) {
+    if (!url) return url;
+    // Normalize and only handle top-level html files
+    const qIndex = url.indexOf('?');
+    const base = qIndex === -1 ? url : url.slice(0, qIndex);
+    const query = qIndex === -1 ? '' : url.slice(qIndex);
+
+    // Ensure leading slash
+    let path = base.startsWith('/') ? base : `/${base}`;
+    // Add .html if missing
+    if (!path.endsWith('.html') && !path.endsWith('/')) {
+      path = `${path}.html`;
+    }
+
+    // Extract slug like "/about-us.html" -> "about-us"
+    const match = path.match(/^\/(?:([^\/]+))\.html$/);
+    if (!match) return url; // ignore nested paths already correct like /pages/landing/...
+    const slug = match[1];
+
+    if (landingPages.has(slug)) return `/pages/landing/${slug}.html${query}`;
+    if (authPages.has(slug)) return `/pages/auth/${slug}.html${query}`;
+    if (appPages.has(slug)) return `/pages/app/${slug}.html${query}`;
+    return url;
+  }
+
+  return {
+    name: 'rewrite-html-routes',
+    configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        req.url = rewrite(req.url);
+        next();
+      });
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        req.url = rewrite(req.url);
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig({
   root: './src',
   publicDir: '../public',
@@ -92,6 +147,7 @@ export default defineConfig({
   },
   
   plugins: [
+    rewriteHtmlRoutes(),
     createHtmlPlugin({
       minify: true,
       inject: {

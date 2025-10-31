@@ -1,4 +1,13 @@
 // Application constants
+import {
+  MAX_FILE_SIZE,
+  DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
+  LOCAL_STORAGE_PREFIX,
+  ENABLE_2FA,
+  ENABLE_REFERRALS,
+  ENABLE_DISCOUNTS,
+} from './env.js';
 
 // API Endpoints
 export const API_ENDPOINTS = {
@@ -148,19 +157,19 @@ export const VALIDATION = {
   PHONE_LENGTH: 8,
   MIN_MEALS: 5,
   MAX_MEALS: 20,
-  MAX_FILE_SIZE: parseInt(import.meta.env.VITE_MAX_FILE_SIZE) || 10485760,
+  MAX_FILE_SIZE: MAX_FILE_SIZE,
 };
 
 // Pagination
 export const PAGINATION = {
   DEFAULT_PAGE: 1,
-  DEFAULT_LIMIT: parseInt(import.meta.env.VITE_DEFAULT_PAGE_SIZE) || 20,
-  MAX_LIMIT: parseInt(import.meta.env.VITE_MAX_PAGE_SIZE) || 50,
+  DEFAULT_LIMIT: DEFAULT_PAGE_SIZE,
+  MAX_LIMIT: MAX_PAGE_SIZE,
 };
 
 // Local Storage Keys
 export const STORAGE_KEYS = {
-  PREFIX: import.meta.env.VITE_LOCAL_STORAGE_PREFIX || 'baldi_',
+  PREFIX: LOCAL_STORAGE_PREFIX,
   REFRESH_TOKEN: 'refreshToken',
   USER: 'user',
   CART: 'cart',
@@ -304,7 +313,7 @@ export const CONTACT_INFO = {
 
 // Feature Flags
 export const FEATURES = {
-  ENABLE_2FA: import.meta.env.VITE_ENABLE_2FA === 'true',
-  ENABLE_REFERRALS: import.meta.env.VITE_ENABLE_REFERRALS === 'true',
-  ENABLE_DISCOUNTS: import.meta.env.VITE_ENABLE_DISCOUNTS === 'true',
+  ENABLE_2FA: ENABLE_2FA,
+  ENABLE_REFERRALS: ENABLE_REFERRALS,
+  ENABLE_DISCOUNTS: ENABLE_DISCOUNTS,
 };

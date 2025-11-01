@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Baldi Meals</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="../../styles/main.css">
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold gradient-text mb-2">Baldi Meals</h1>
+      <p class="text-gray-600">Create your account and start your healthy journey.</p>
+    </div>
+
+    <!-- Register Card -->
+    <div class="card">
+      <form id="registerForm" class="space-y-4">
+        <!-- First Name -->
+        <div class="form-group">
+          <label for="firstName" class="form-label">First Name</label>
+          <input 
+            type="text" 
+            id="firstName" 
+            name="firstName" 
+            class="form-input" 
+            placeholder="John"
+            required
+          >
+          <p id="firstNameError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input 
+            type="text" 
+            id="lastName" 
+            name="lastName" 
+            class="form-input" 
+            placeholder="Doe"
+            required
+          >
+          <p id="lastNameError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            placeholder="you@example.com"
+            required
+          >
+          <p id="emailError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label for="phoneNumber" class="form-label">Phone Number (8 digits)</label>
+          <input 
+            type="tel" 
+            id="phoneNumber" 
+            name="phoneNumber" 
+            class="form-input" 
+            placeholder="12345678"
+            pattern="[0-9]{8}"
+            required
+          >
+          <p id="phoneNumberError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="••••••••"
+            required
+          >
+          <p class="form-help">Min 8 chars, uppercase, lowercase, number, special char</p>
+          <p id="passwordError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            name="confirmPassword" 
+            class="form-input" 
+            placeholder="••••••••"
+            required
+          >
+          <p id="confirmPasswordError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Terms Checkbox -->
+        <div class="form-group">
+          <label class="flex items-start gap-2">
+            <input type="checkbox" id="terms" class="mt-1 rounded border-gray-300 text-primary-500 focus:ring-primary-500" required>
+            <span class="text-sm text-gray-600">
+              I agree to the <a href="/terms.html" class="text-primary-500 hover:text-primary-600">Terms & Conditions</a>
+            </span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-full" id="registerBtn">
+          <span id="registerBtnText">Create Account</span>
+          <span id="registerBtnLoading" class="hidden">
+            <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Login Link -->
+      <p class="text-center text-gray-600">
+        Already have an account? 
+        <a href="/login.html" class="text-primary-500 hover:text-primary-600 font-medium">
+          Login here
+        </a>
+      </p>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="text-center mt-6">
+      <a href="/index.html" class="text-gray-600 hover:text-gray-900">
+        ← Back to Home
+      </a>
+    </div>
+  </div>
+
+  <script type="module" src="../../scripts/pages/auth/register.js"></script>
+</body>
+</html>

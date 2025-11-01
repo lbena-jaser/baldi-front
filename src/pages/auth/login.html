@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Baldi Meals</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="../../styles/main.css">
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold gradient-text mb-2">Baldi Meals</h1>
+      <p class="text-gray-600">Welcome back! Please login to your account.</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="card">
+      <form id="loginForm" class="space-y-6">
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            placeholder="you@example.com"
+            required
+          >
+          <p id="emailError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="••••••••"
+            required
+          >
+          <p id="passwordError" class="form-error hidden"></p>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="rememberMe" class="rounded border-gray-300 text-primary-500 focus:ring-primary-500">
+            <span class="text-sm text-gray-600">Remember me</span>
+          </label>
+          <a href="/forgot-password.html" class="text-sm text-primary-500 hover:text-primary-600">
+            Forgot password?
+          </a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-full" id="loginBtn">
+          <span id="loginBtnText">Login</span>
+          <span id="loginBtnLoading" class="hidden">
+            <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+        </button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Register Link -->
+      <p class="text-center text-gray-600">
+        Don't have an account? 
+        <a href="/register.html" class="text-primary-500 hover:text-primary-600 font-medium">
+          Register here
+        </a>
+      </p>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="text-center mt-6">
+      <a href="/index.html" class="text-gray-600 hover:text-gray-900">
+        ← Back to Home
+      </a>
+    </div>
+  </div>
+
+  <script type="module" src="../../scripts/pages/auth/login.js"></script>
+</body>
+</html>

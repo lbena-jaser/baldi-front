@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Email - Baldi Meals</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="../../styles/main.css">
+</head>
+<body class="bg-gradient-to-br from-primary-50 to-secondary-50 min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold gradient-text mb-2">Email Verification</h1>
+    </div>
+
+    <div class="card">
+      <div id="verificationContent" class="text-center py-8">
+        <div class="spinner mx-auto mb-4"></div>
+        <p class="text-gray-600">Verifying your email...</p>
+      </div>
+
+      <div id="successContent" class="hidden text-center py-8">
+        <svg class="w-16 h-16 mx-auto text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Email Verified!</h2>
+        <p class="text-gray-600 mb-6">Your email has been successfully verified.</p>
+        <a href="/login.html" class="btn btn-primary">Continue to Login</a>
+      </div>
+
+      <div id="errorContent" class="hidden text-center py-8">
+        <svg class="w-16 h-16 mx-auto text-red-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Verification Failed</h2>
+        <p class="text-gray-600 mb-6" id="errorMessage">The verification link is invalid or has expired.</p>
+        <a href="/register.html" class="btn btn-primary">Register Again</a>
+      </div>
+    </div>
+
+    <div class="text-center mt-6">
+      <a href="/index.html" class="text-gray-600 hover:text-gray-900">← Back to Home</a>
+    </div>
+  </div>
+
+  <script type="module" src="../../scripts/pages/auth/verify-email.js"></script>
+</body>
+</html>

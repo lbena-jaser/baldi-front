@@ -18,7 +18,7 @@ class AuthService {
         response.data.refreshToken
       );
       
-      // Update store
+      // Update store BEFORE any redirect
       authStore.getState().setUser(response.data.user);
       
       // Emit event
@@ -50,8 +50,11 @@ class AuthService {
         response.data.refreshToken
       );
       
-      // Update store
+      // Update store BEFORE any redirect - this is critical
       authStore.getState().setUser(response.data.user);
+      
+      // Wait a tick to ensure state is updated
+      await new Promise(resolve => setTimeout(resolve, 0));
       
       // Emit event
       eventBus.emit(EVENTS.AUTH_LOGIN, response.data.user);
@@ -80,9 +83,12 @@ class AuthService {
         response.data.refreshToken
       );
       
-      // Update store
+      // Update store BEFORE any redirect
       authStore.getState().setUser(response.data.user);
       authStore.getState().setRequires2FA(false);
+      
+      // Wait a tick to ensure state is updated
+      await new Promise(resolve => setTimeout(resolve, 0));
       
       // Emit event
       eventBus.emit(EVENTS.AUTH_LOGIN, response.data.user);
@@ -237,7 +243,12 @@ class AuthService {
   
   // Check if user is authenticated
   isAuthenticated() {
-    return authStore.getState().isAuthenticated;
+    // Check both the store AND the token
+    const hasUser = authStore.getState().isAuthenticated;
+    const hasToken = authManager.getAccessToken() !== null;
+    
+    // Both must be true
+    return hasUser && hasToken;
   }
   
   // Get current user

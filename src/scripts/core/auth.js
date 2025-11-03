@@ -8,10 +8,16 @@ class AuthManager {
     this.refreshToken = null;
     this.tokenRefreshTimer = null;
     this.encryptionKey = 'baldi-secure-key-2024'; // In production, use env variable
+    this.isInitialized = false;
   }
   
   // Initialize auth manager
-  init() {
+  // Initialize auth manager
+  async init() {
+    if (this.isInitialized) {
+      return;
+    }
+    
     // Load refresh token from storage
     const encryptedToken = localStorage.getItem(STORAGE_KEYS.PREFIX + STORAGE_KEYS.REFRESH_TOKEN);
     
@@ -19,16 +25,24 @@ class AuthManager {
       try {
         this.refreshToken = this.decrypt(encryptedToken);
         
-        // Try to refresh access token on init
-        this.refreshAccessToken().catch(() => {
-          // If refresh fails, clear tokens
+        // Immediately get a fresh access token if we have a refresh token
+        // This ensures we have a valid access token on page load
+        try {
+          await this.refreshAccessToken();
+          console.log('✅ Auth manager initialized with fresh access token');
+        } catch (error) {
+          console.error('Failed to refresh token on init:', error);
+          // If refresh fails, clear everything
           this.logout();
-        });
+        }
       } catch (error) {
         console.error('Auth init error:', error);
-        this.logout();
+        // Don't logout on init error - just clear the bad token
+        localStorage.removeItem(STORAGE_KEYS.PREFIX + STORAGE_KEYS.REFRESH_TOKEN);
       }
     }
+    
+    this.isInitialized = true;
   }
   
   // Set tokens
@@ -42,6 +56,8 @@ class AuthManager {
     
     // Schedule token refresh (6 days before 7-day expiry)
     this.scheduleTokenRefresh();
+    
+    console.log('✅ Tokens stored successfully');
   }
   
   // Get access token
@@ -67,10 +83,12 @@ class AuthManager {
       
       this.setTokens(response.data.accessToken, response.data.refreshToken);
       
+      console.log('✅ Token refreshed successfully');
+      
       return response.data.accessToken;
     } catch (error) {
-      // Clear invalid tokens
-      this.logout();
+      console.error('Token refresh failed:', error);
+      // Don't auto-logout - let the user handle it
       throw error;
     }
   }
@@ -105,6 +123,8 @@ class AuthManager {
       clearTimeout(this.tokenRefreshTimer);
       this.tokenRefreshTimer = null;
     }
+    
+    console.log('✅ Auth manager cleared');
   }
   
   // Check if user is authenticated

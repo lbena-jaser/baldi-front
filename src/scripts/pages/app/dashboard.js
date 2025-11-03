@@ -1,18 +1,54 @@
 import authService from '../../services/auth.service.js';
+import authManager from '../../core/auth.js';
 import orderService from '../../services/order.service.js';
 import subscriptionService from '../../services/subscription.service.js';
 import notificationService from '../../services/notification.service.js';
 import { showToast } from '../../components/toast.js';
 import { formatDate, formatCurrency } from '../../core/utils.js';
 
+// Flag to prevent multiple checks
+let isCheckingAuth = false;
+
 document.addEventListener('DOMContentLoaded', async () => {
-  // Check authentication
+  // Check authentication ONCE with a delay to ensure state is loaded
+  if (isCheckingAuth) {
+    return;
+  }
+  isCheckingAuth = true;
+  
+  // CRITICAL: Wait for auth manager to fully initialize (refresh token)
+  // This ensures we have a valid access token before checking auth
+  let retries = 0;
+  const maxRetries = 50; // Wait up to 5 seconds
+  
+  while (!authManager.isInitialized && retries < maxRetries) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    retries++;
+  }
+  
+  if (retries >= maxRetries) {
+    console.error('Auth manager failed to initialize');
+    window.location.href = '/login.html';
+    return;
+  }
+  
+  console.log('Auth manager initialized, checking authentication...');
+  
   if (!authService.isAuthenticated()) {
+    console.log('Not authenticated, redirecting to login');
     window.location.href = '/login.html';
     return;
   }
 
+  console.log('User authenticated, loading dashboard');
+
   const user = authService.getCurrentUser();
+  
+  if (!user) {
+    console.error('No user data available');
+    window.location.href = '/login.html';
+    return;
+  }
   
   // Update user info
   document.getElementById('userName').textContent = user.firstName;
@@ -24,7 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const profileBtn = document.getElementById('profileBtn');
   const profileDropdown = document.getElementById('profileDropdown');
   
-  profileBtn.addEventListener('click', () => {
+  profileBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     profileDropdown.classList.toggle('hidden');
   });
 
@@ -36,7 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Logout
-  document.getElementById('logoutBtn').addEventListener('click', async () => {
+  document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
     await authService.logout();
   });
 
@@ -100,8 +138,13 @@ function updateSubscriptionStatus(subscription) {
   
   if (!subscription) {
     statusElement.textContent = 'None';
-    statusElement.parentElement.parentElement.querySelector('.bg-green-100').classList.remove('bg-green-100');
-    statusElement.parentElement.parentElement.querySelector('.bg-green-100').classList.add('bg-gray-100');
+    const badge = statusElement.closest('.card').querySelector('.w-12');
+    if (badge) {
+      badge.classList.remove('bg-green-100');
+      badge.classList.add('bg-gray-100');
+      badge.querySelector('svg').classList.remove('text-green-600');
+      badge.querySelector('svg').classList.add('text-gray-600');
+    }
     return;
   }
 
@@ -109,15 +152,21 @@ function updateSubscriptionStatus(subscription) {
   statusElement.textContent = statusInfo.label;
   
   // Update badge color based on status
-  const badge = statusElement.parentElement.parentElement.querySelector('.w-12');
-  badge.classList.remove('bg-green-100', 'bg-blue-100', 'bg-red-100');
-  
-  if (subscription.status === 'ACTIVE') {
-    badge.classList.add('bg-green-100');
-  } else if (subscription.status === 'PAUSED') {
-    badge.classList.add('bg-blue-100');
-  } else {
-    badge.classList.add('bg-red-100');
+  const badge = statusElement.closest('.card').querySelector('.w-12');
+  if (badge) {
+    badge.classList.remove('bg-green-100', 'bg-blue-100', 'bg-red-100', 'bg-gray-100');
+    badge.querySelector('svg').classList.remove('text-green-600', 'text-blue-600', 'text-red-600', 'text-gray-600');
+    
+    if (subscription.status === 'ACTIVE') {
+      badge.classList.add('bg-green-100');
+      badge.querySelector('svg').classList.add('text-green-600');
+    } else if (subscription.status === 'PAUSED') {
+      badge.classList.add('bg-blue-100');
+      badge.querySelector('svg').classList.add('text-blue-600');
+    } else {
+      badge.classList.add('bg-red-100');
+      badge.querySelector('svg').classList.add('text-red-600');
+    }
   }
 }
 

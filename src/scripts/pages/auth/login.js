@@ -4,11 +4,15 @@ import { showToast } from '../../components/toast.js';
 import { getQueryParam } from '../../core/utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Check if already authenticated
-  if (authService.isAuthenticated()) {
-    window.location.href = '/dashboard.html';
-    return;
-  }
+  // Check if already authenticated - but don't redirect immediately
+  // Wait a bit to ensure all state is loaded
+  setTimeout(() => {
+    if (authService.isAuthenticated()) {
+      console.log('Already authenticated, redirecting to dashboard');
+      window.location.href = '/dashboard.html';
+      return;
+    }
+  }, 100);
 
   const form = document.getElementById('loginForm');
   const loginBtn = document.getElementById('loginBtn');
@@ -64,16 +68,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Success - redirect
+      // Success - wait a bit longer to ensure state is synced
       showToast('Login successful! Redirecting...', 'success');
       
-      setTimeout(() => {
-        if (redirect) {
-          window.location.href = redirect;
-        } else {
-          window.location.href = '/dashboard.html';
-        }
-      }, 1000);
+      // Wait 500ms to ensure auth state is fully updated
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      // Now redirect
+      if (redirect) {
+        window.location.href = redirect;
+      } else {
+        window.location.href = '/dashboard.html';
+      }
 
     } catch (error) {
       console.error('Login error:', error);
